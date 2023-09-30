@@ -10,7 +10,7 @@ function App() {
     computer: ''
   });
   const [winnersCounter, setWinnersCounter] = useState({
-    player: 0,
+    player: 0, 
     computer: 0,
     ties: 0
   });

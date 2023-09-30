@@ -113,7 +113,6 @@ function App() {
           <p>Jogador: {winnersCounter.player}</p>
           <p>Computador: {winnersCounter.computer}</p>
           <p>Empates: {winnersCounter.ties}</p>
-          <p>Computador jogou: {currentPlay.computer}</p>
           <button onClick={() => makeMove('rock')}>
             <img src={RockHandTransparent} alt="Pedra" />
           </button>

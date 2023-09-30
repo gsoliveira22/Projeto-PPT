@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import RockHandTransparent from './assets/moves/rock-hand-transparent.png';
+import PaperHandTransparent from './assets/moves/paper-hand-transparent.png';
+import ScissorHandTransparent from './assets/moves/scissor-hand-transparent.png';
 import './App.css';
 
 function App() {
@@ -112,13 +115,13 @@ function App() {
           <p>Empates: {winnersCounter.ties}</p>
           <p>Computador jogou: {currentPlay.computer}</p>
           <button onClick={() => makeMove('rock')}>
-            Pedra
+            <img src={RockHandTransparent} alt="Pedra" />
           </button>
           <button onClick={() => makeMove('paper')}>
-            Papel
+            <img src={PaperHandTransparent} alt="Papel" />
           </button>
           <button onClick={() => makeMove('scissor')}>
-            Tesoura
+            <img src={ScissorHandTransparent} alt="Tesoura" />
           </button>
           <button onClick={handleEndGameClick}>Encerrar Jogo</button>
         </div>

@@ -1,14 +1,25 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  background: hsla(235, 21%, 21%, 1);
+  color: white;
 }
 
 img {
-  width: 200px; 
-  height: 150px;
+  width: 200px;
+  height: 175px;
 }
 
 button {
   margin: 5px;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; 
 }

@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import RockHandTransparent from './assets/moves/rock-hand-transparent.png';
-import PaperHandTransparent from './assets/moves/paper-hand-transparent.png';
-import ScissorHandTransparent from './assets/moves/scissor-hand-transparent.png';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
@@ -14,8 +11,9 @@ function App() {
     computer: 0,
     ties: 0
   });
-  const [winner, setWinner] = useState('');
-  const [possibleMoves, setPossibleMoves] = useState([
+  const [gameOver, setGameOver] = useState(false);
+
+  const possibleMoves = [
     {
       type: 'paper',
       label: 'Papel',
@@ -34,86 +32,48 @@ function App() {
       wins: 'paper',
       loses: 'rock'
     }
-  ]);
-
-  const [gameOver, setGameOver] = useState(false);
+  ];
 
   const makeMove = (playerMove) => {
     if (gameOver) return;
 
-    const minimumMachineMoveNumber = 1;
-    const maximumMachineMoveNumber = 3;
+    const minimumMachineMoveNumber = 0;
+    const maximumMachineMoveNumber = 2;
 
-    const randomMachineMove =
-      Math.floor(
-        Math.random() *
-        (maximumMachineMoveNumber - minimumMachineMoveNumber + 1)
-      ) + minimumMachineMoveNumber;
+    const randomMachineMove = Math.floor(
+      Math.random() * (maximumMachineMoveNumber - minimumMachineMoveNumber + 1)
+    );
 
-    let machineMoveType = '';
+    const machineMove = possibleMoves[randomMachineMove];
 
-    switch (randomMachineMove) {
-      case 1:
-        machineMoveType = 'Pedra';
-        break;
-      case 2:
-        machineMoveType = 'Papel';
-        break;
-      case 3:
-        machineMoveType = 'Tesoura';
-        break;
-      default:
-        break;
-    }
+    setCurrentPlay({
+      player: playerMove,
+      computer: machineMove.label
+    });
 
-    switch (playerMove) {
-      case 'rock':
-        setCurrentPlay((currentValue) => ({ ...currentValue, player: 'Pedra' }));
-        break;
-      case 'paper':
-        setCurrentPlay((currentValue) => ({ ...currentValue, player: 'Papel' }));
-        break;
-      case 'scissor':
-        setCurrentPlay((currentValue) => ({ ...currentValue, player: 'Tesoura' }));
-        break;
-      default:
-        break;
-    }
-
-    setCurrentPlay((currentValue) => ({ ...currentValue, computer: machineMoveType }));
-
-    if (machineMoveType === playerMove) {
-      setWinner('Empate');
+    if (machineMove.type === playerMove) {
       setWinnersCounter((currentCounter) => ({
         ...currentCounter,
         ties: currentCounter.ties + 1,
       }));
+    } else if (machineMove.wins === playerMove) {
+      setWinnersCounter((currentCounter) => ({
+        ...currentCounter,
+        player: currentCounter.player + 1,
+      }));
     } else {
-      const playerMoveValidation = possibleMoves.find(
-        (currentMove) => currentMove.type === playerMove
-      );
+      setWinnersCounter((currentCounter) => ({
+        ...currentCounter,
+        computer: currentCounter.computer + 1,
+      }));
+    }
 
-      const isPlayerTheWinner = playerMoveValidation.wins === machineMoveType.toLowerCase();
+    checkGameOver();
+  };
 
-      if (isPlayerTheWinner) {
-        setWinner('Jogador');
-        setWinnersCounter((currentCounter) => ({
-          ...currentCounter,
-          player: currentCounter.player + 1,
-        }));
-      } else if (playerMoveValidation.loses === machineMoveType.toLowerCase()) {
-        setWinner('Computador');
-        setWinnersCounter((currentCounter) => ({
-          ...currentCounter,
-          computer: currentCounter.computer + 1,
-        }));
-      }else if (playerMoveValidation.ties === machineMoveType.toLowerCase()) {
-        setWinner('Empate');
-        setWinnersCounter((currentCounter) => ({
-          ...currentCounter,
-          ties: currentCounter.ties + 1,
-        }));
-      }
+  const checkGameOver = () => {
+    if (winnersCounter.player === 3 || winnersCounter.computer === 3) {
+      setGameOver(true);
     }
   };
 
@@ -127,7 +87,6 @@ function App() {
       player: '',
       computer: ''
     });
-    setWinner('');
     setWinnersCounter({
       player: 0,
       computer: 0,
@@ -151,14 +110,15 @@ function App() {
           <p>Jogador: {winnersCounter.player}</p>
           <p>Computador: {winnersCounter.computer}</p>
           <p>Empates: {winnersCounter.ties}</p>
+          <p>Computador jogou: {currentPlay.computer}</p>
           <button onClick={() => makeMove('rock')}>
-            <img src={RockHandTransparent} alt="Pedra" />
+            Pedra
           </button>
           <button onClick={() => makeMove('paper')}>
-            <img src={PaperHandTransparent} alt="Papel" />
+            Papel
           </button>
           <button onClick={() => makeMove('scissor')}>
-            <img src={ScissorHandTransparent} alt="Tesoura" />
+            Tesoura
           </button>
           <button onClick={handleEndGameClick}>Encerrar Jogo</button>
         </div>
